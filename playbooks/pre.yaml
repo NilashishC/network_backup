@@ -1,0 +1,15 @@
+---
+- block:
+    - name: Fail if Github Repository for backup is not set
+      ansible.builtin.debug:
+        msg: "The Github Repository for backup is not set. Please specify it through the GH_REPO variable."
+      failed_when: not GH_REPO|d("")
+
+    - name: Fail if ansible_network_os is not set
+      ansible.builtin.debug:
+        msg: "Network OS not set for {{ inventory_hostname }}. Please specify it through the ansible_network_os variable."
+      failed_when: not ansible_network_os|d("")
+  rescue:
+    - name: Display error message
+      ansible.builtin.fail:
+        msg: One or more pre-run checks failed! Backup could not be taken.
